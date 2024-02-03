@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/vanilla-os/albius/core/lvm"
 )
@@ -309,6 +310,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *Partition* (`string`): The partition to use as PV.
 	 */
 	case "pvcreate":
+		fmt.Println("Waiting for 5 seconds to test if it's just a timing issue...")
+		time.Sleep(5 * time.Seconds)
 		part := args[0].(string)
 		err := lvm.Pvcreate(part)
 		if err != nil {
