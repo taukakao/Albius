@@ -311,7 +311,7 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 */
 	case "pvcreate":
 		fmt.Println("Waiting for 5 seconds to test if it's just a timing issue...")
-		time.Sleep(5 * time.Seconds)
+		time.Sleep(5 * time.Second)
 		part := args[0].(string)
 		err := lvm.Pvcreate(part)
 		if err != nil {
