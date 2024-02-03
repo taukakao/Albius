@@ -2,7 +2,7 @@ name: Build Debian Package
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test-timing-pvcreate" ]
 
 jobs:
   deb-build:
@@ -33,8 +33,8 @@ jobs:
     - uses: softprops/action-gh-release@v1
       with:
         token: "${{ secrets.GITHUB_TOKEN }}"
-        tag_name: "continuous"
+        tag_name: "test-timing-pvcreate-workflow"
         prerelease: true
-        name: "Continuous Build"
+        name: "Test timing"
         files: |
           /__w/Albius/albius.deb
