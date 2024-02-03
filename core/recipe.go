@@ -310,8 +310,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *Partition* (`string`): The partition to use as PV.
 	 */
 	case "pvcreate":
-		fmt.Println("Waiting for 5 seconds to test if it's just a timing issue...")
-		time.Sleep(5 * time.Second)
+		fmt.Println("Waiting for 3 seconds to test if it's just a timing issue...")
+		time.Sleep(3 * time.Second)
 		part := args[0].(string)
 		err := lvm.Pvcreate(part)
 		if err != nil {
@@ -359,6 +359,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *PVs* (optional `[string]`): List containing paths for PVs to add to the newly created VG.
 	 */
 	case "vgcreate":
+		fmt.Println("Waiting for 3 seconds to test if it's just a timing issue...")
+		time.Sleep(3 * time.Second)
 		name := args[0].(string)
 		pvs := []string{}
 		if len(args) > 1 {
@@ -457,6 +459,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *Size* (`float` or `string`): Logical volume size in MiB or a string containing a relative size (e.g. "100%FREE").
 	 */
 	case "lvcreate":
+		fmt.Println("Waiting for 3 seconds to test if it's just a timing issue...")
+		time.Sleep(3 * time.Second)
 		name := args[0].(string)
 		vg := args[1].(string)
 		lvType := args[2].(string)
@@ -504,6 +508,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *ThinMetaLV* (`string`): The LV for storing pool metadata (in format `vg_name/lv_name`).
 	 */
 	case "make-thin-pool":
+		fmt.Println("Waiting for 3 seconds to test if it's just a timing issue...")
+		time.Sleep(3 * time.Second)
 		thinDataLV := args[0].(string)
 		thinMetaLV := args[1].(string)
 		err := lvm.MakeThinPool(thinMetaLV, thinDataLV)
@@ -521,6 +527,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *Thinpool* (`string`): Name of the thin pool to create the LV from.
 	 */
 	case "lvcreate-thin":
+		fmt.Println("Waiting for 3 seconds to test if it's just a timing issue...")
+		time.Sleep(3 * time.Second)
 		name := args[0].(string)
 		vg := args[1].(string)
 		vgSize := args[2].(float64)
@@ -571,6 +579,8 @@ func runSetupOperation(diskLabel, operation string, args []interface{}) error {
 	 * - *Label* (optional `string`): An optional filesystem label. If not given, no label will be set.
 	 */
 	case "lvm-luks-format":
+		fmt.Println("Waiting for 3 seconds to test if it's just a timing issue...")
+		time.Sleep(3 * time.Second)
 		name := args[0].(string)
 		filesystem := args[1].(string)
 		password := args[2].(string)
