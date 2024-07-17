@@ -2,7 +2,7 @@ name: Build Debian Package
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "fix-wrong-keyboard-initramfs" ]
 
 jobs:
   deb-build:
@@ -36,7 +36,7 @@ jobs:
     - uses: softprops/action-gh-release@v1
       with:
         token: "${{ secrets.GITHUB_TOKEN }}"
-        tag_name: "continuous"
+        tag_name: "fix-keyboard-workflow"
         prerelease: true
         name: "Continuous Build"
         files: |
