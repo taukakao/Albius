@@ -142,6 +142,13 @@ func RunGrubInstall(targetRoot, bootDirectory, diskPath string, target FirmwareT
 func RunGrubMkconfig(targetRoot, output string) error {
 	grubMkconfigCmd := "grub-mkconfig -o %s"
 
+	if targetRoot != "" {
+		err := MountChrootRuntime(targetRoot)
+		if err != nil {
+			return err
+		}
+	}
+
 	var err error
 	if targetRoot != "" {
 		err = util.RunInChroot(targetRoot, fmt.Sprintf(grubMkconfigCmd, output))
@@ -150,6 +157,13 @@ func RunGrubMkconfig(targetRoot, output string) error {
 	}
 	if err != nil {
 		return err
+	}
+
+	if targetRoot != "" {
+		err := UnmountChrootRuntime(targetRoot)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
