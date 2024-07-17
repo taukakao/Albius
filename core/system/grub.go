@@ -100,13 +100,9 @@ func RemoveGrubScript(targetRoot, scriptName string) error {
 func RunGrubInstall(targetRoot, bootDirectory, diskPath string, target FirmwareType, efiDevice ...string) error {
 	// Mount necessary targets for chroot
 	if targetRoot != "" {
-		requiredBinds := []string{"/dev", "/dev/pts", "/proc", "/sys", "/run"}
-		for _, bind := range requiredBinds {
-			targetBind := filepath.Join(targetRoot, bind)
-			err := util.RunCommand(fmt.Sprintf("mount --bind %s %s", bind, targetBind))
-			if err != nil {
-				return fmt.Errorf("failed to mount %s to %s: %s", bind, targetRoot, err)
-			}
+		err := MountChrootRuntime(targetRoot)
+		if err != nil {
+			return err
 		}
 	}
 
@@ -123,7 +119,7 @@ func RunGrubInstall(targetRoot, bootDirectory, diskPath string, target FirmwareT
 	}
 
 	if targetRoot != "" {
-		return nil
+		return UnmountChrootRuntime(targetRoot)
 	}
 
 	// FIXME: This is needed on Vanilla due to some recent GRUB change. If you're using Debian sid as

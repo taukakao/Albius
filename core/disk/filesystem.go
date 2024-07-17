@@ -104,32 +104,6 @@ func GenFstab(targetRoot string, entries [][]string) error {
 	return nil
 }
 
-func UpdateInitramfs(root string) error {
-	// Setup mountpoints
-	mountOrder := []string{"/dev", "/dev/pts", "/proc", "/sys"}
-	for _, mount := range mountOrder {
-		if err := util.RunCommand(fmt.Sprintf("mount --bind %s %s%s", mount, root, mount)); err != nil {
-			return fmt.Errorf("error mounting %s to chroot: %s", mount, err)
-		}
-	}
-
-	updInitramfsCmd := "update-initramfs -c -k all"
-	err := util.RunInChroot(root, updInitramfsCmd)
-	if err != nil {
-		return fmt.Errorf("failed to run update-initramfs command: %s", err)
-	}
-
-	// Cleanup mountpoints
-	unmountOrder := []string{"/dev/pts", "/dev", "/proc", "/sys"}
-	for _, mount := range unmountOrder {
-		if err := util.RunCommand(fmt.Sprintf("umount %s%s", root, mount)); err != nil {
-			return fmt.Errorf("error unmounting %s fron chroot: %s", mount, err)
-		}
-	}
-
-	return nil
-}
-
 func OCISetup(imageSource, storagePath, destination string, verbose bool) error {
 	pmt, err := prometheus.NewPrometheus(filepath.Join(storagePath, "storage"), "overlay", 0)
 	if err != nil {

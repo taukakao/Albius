@@ -912,6 +912,28 @@ func (recipe *Recipe) RunPostInstall() error {
 		}
 	}
 
+	// Initramfs pre-scripts
+	for _, preCmd := range recipe.Installation.InitramfsPre {
+		err := util.RunInChroot(RootA, preCmd)
+		if err != nil {
+			return fmt.Errorf("initramfs pre-script '%s' failed: %s", preCmd, err)
+		}
+	}
+
+	// Update Initramfs
+	err := system.UpdateInitramfs(RootA)
+	if err != nil {
+		return fmt.Errorf("failed to update initramfs: %s", err)
+	}
+
+	// Initramfs post-scripts
+	for _, postCmd := range recipe.Installation.InitramfsPost {
+		err := util.RunInChroot(RootA, postCmd)
+		if err != nil {
+			return fmt.Errorf("initramfs post-script '%s' failed: %s", postCmd, err)
+		}
+	}
+
 	return nil
 }
 
@@ -1108,28 +1130,6 @@ func (recipe *Recipe) Install() error {
 	err = disk.GenFstab(RootA, fstabEntries)
 	if err != nil {
 		return fmt.Errorf("failed to generate fstab: %s", err)
-	}
-
-	// Initramfs pre-scripts
-	for _, preCmd := range recipe.Installation.InitramfsPre {
-		err := util.RunInChroot(RootA, preCmd)
-		if err != nil {
-			return fmt.Errorf("initramfs pre-script '%s' failed: %s", preCmd, err)
-		}
-	}
-
-	// Update Initramfs
-	err = disk.UpdateInitramfs(RootA)
-	if err != nil {
-		return fmt.Errorf("failed to update initramfs: %s", err)
-	}
-
-	// Initramfs post-scripts
-	for _, postCmd := range recipe.Installation.InitramfsPost {
-		err := util.RunInChroot(RootA, postCmd)
-		if err != nil {
-			return fmt.Errorf("initramfs post-script '%s' failed: %s", postCmd, err)
-		}
 	}
 
 	return nil
