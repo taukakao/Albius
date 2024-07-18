@@ -914,10 +914,11 @@ func (recipe *Recipe) RunPostInstall() error {
 
 	// Initramfs pre-scripts
 	for _, preCmd := range recipe.Installation.InitramfsPre {
-		err := util.RunInChroot(RootA, preCmd)
-		if err != nil {
-			return fmt.Errorf("initramfs pre-script '%s' failed: %s", preCmd, err)
-		}
+		fmt.Println(RootA, preCmd)
+		// err := util.RunInChroot(RootA, preCmd)
+		// if err != nil {
+		// 	return fmt.Errorf("initramfs pre-script '%s' failed: %s", preCmd, err)
+		// }
 	}
 
 	// Update Initramfs
@@ -928,10 +929,11 @@ func (recipe *Recipe) RunPostInstall() error {
 
 	// Initramfs post-scripts
 	for _, postCmd := range recipe.Installation.InitramfsPost {
-		err := util.RunInChroot(RootA, postCmd)
-		if err != nil {
-			return fmt.Errorf("initramfs post-script '%s' failed: %s", postCmd, err)
-		}
+		fmt.Println(RootA, postCmd)
+		// err := util.RunInChroot(RootA, postCmd)
+		// if err != nil {
+		// 	return fmt.Errorf("initramfs post-script '%s' failed: %s", postCmd, err)
+		// }
 	}
 
 	return nil
